@@ -72,6 +72,22 @@ body {
   transform: rotateY(180deg);
 }
 
+.button {
+  background-color: limegreen;
+  border: none;
+  color: white;
+  padding: 0.2em;
+  text-align: center;
+  text-decoration: none;
+  font-size: 2.5em;
+  margin: 4px 2px;
+  border-radius: 5em;
+  transition: all .3s linear;
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
 .beauty {
   display: flex;
   align-items: center;

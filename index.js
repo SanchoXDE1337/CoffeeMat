@@ -58,6 +58,7 @@ const volumes = {
 
 let clicked = false;
 let clickedElem;
+let clickedID;
 
 let cards = document.querySelectorAll('.card');
 cards.forEach(card => {
@@ -66,6 +67,7 @@ cards.forEach(card => {
             card.classList.toggle('is-flipped');
             clicked = !clicked;
             clickedElem = card;
+            console.log(clickedElem.id);
         } else {
             if (clickedElem === card) {
                 card.classList.toggle('is-flipped');
@@ -75,6 +77,7 @@ cards.forEach(card => {
                 clickedElem.classList.toggle('is-flipped');
                 card.classList.toggle('is-flipped');
                 clickedElem = card;
+                console.log(clickedElem.id);
             }
         }
     });

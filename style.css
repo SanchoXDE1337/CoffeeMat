@@ -1,5 +1,6 @@
 body {
   background-color: beige;
+  user-select: none;
 }
 
 .container {
@@ -83,6 +84,18 @@ body {
   transform: rotateY(180deg);
 }
 
+.inactive {
+  width: 1fr;
+  height: 20vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  position: relative;
+  background-color: darkgray;
+}
+
 .button {
   background-color: limegreen;
   border: none;
@@ -103,12 +116,44 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 2px 4px 25px rgba(0, 0, 0, 0.1);
   border-radius: 12px;
   width: 96vw;
   height: 20vh;
   margin: 1.5em auto;
+  transition: all 0.3s linear;
+  transform-style: preserve-3d;
+  position: relative;
+  box-shadow: 2px 4px 25px rgba(0, 0, 0, 0.1);
+}
+
+.beauty.is-flipped {
+  transform: rotateX(180deg);
+}
+
+.beauty__face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.beauty__face--front {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  width: 100%;
   background-color: crimson;
+}
+
+.beauty__face--back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  width: 100%;
+  background-color: ivory;
+  transform: rotateX(180deg);
 }
 
 /*# sourceMappingURL=style.css.map */

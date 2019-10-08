@@ -56,34 +56,57 @@ const volumes = {
     cherry: 500
 };
 
+const beauty = document.querySelector(".beauty");
 let clicked = false;
+let buttonWasClicked = false;
 let clickedElem;
-let clickedID;
+
+const cardClickHandler = (card) => {
+    if (!clicked) {
+        card.classList.toggle('is-flipped');
+        clicked = !clicked;
+        clickedElem = card;
+        console.log(clickedElem.id);
+    } else {
+        if (clickedElem === card) {
+            card.classList.toggle('is-flipped');
+            clicked = !clicked;
+            clickedElem = '';
+        } else {
+            clickedElem.classList.toggle('is-flipped');
+            card.classList.toggle('is-flipped');
+            clickedElem = card;
+            console.log(clickedElem.id);
+        }
+    }
+};
+
 
 let cards = document.querySelectorAll('.card');
 cards.forEach(card => {
-    card.addEventListener('click', function () {
-        if (!clicked) {
-            card.classList.toggle('is-flipped');
-            clicked = !clicked;
-            clickedElem = card;
-            console.log(clickedElem.id);
-        } else {
-            if (clickedElem === card) {
-                card.classList.toggle('is-flipped');
-                clicked = !clicked;
-                clickedElem = '';
-            } else {
-                clickedElem.classList.toggle('is-flipped');
-                card.classList.toggle('is-flipped');
-                clickedElem = card;
-                console.log(clickedElem.id);
-            }
-        }
-    });
+    let handler = () => {
+        cardClickHandler(card);
+    };
+    card.addEventListener('click', handler);
 });
 
+let buttons = document.querySelectorAll(".button");
+buttons.forEach(button => {
+    button.addEventListener('click', function () {
+        button.style.visibility = 'hidden';
+        buttonWasClicked = !buttonWasClicked;
+        if (buttonWasClicked) {
+            beauty.classList.toggle('is-flipped');
+        }
+        setTimeout(() => {
+            cards.forEach(card => {
+                card.classList.toggle('inactive');
+                card.classList.toggle('card__face--front');
+                card.classList.toggle('card');
+                buttonWasClicked ? card.style.pointerEvents = 'none' : card.style.pointerEvents = 'auto';
+            })
+        }, 400);
+    })
+});
 
 //volumes[menu[menu.length-1].syrup] -= 50;
-
-console.log(volumes);

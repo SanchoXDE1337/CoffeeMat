@@ -1,0 +1,85 @@
+body {
+  background-color: beige;
+}
+
+@mixin card {
+  width: 1fr;
+  height: 20vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.container {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 1.5em;
+  justify-items: stretch;
+  padding: 0 1.5em;
+}
+
+#cash {
+  @include card;
+  box-shadow: 2px 4px 25px rgba(0, 0, 0, .3);
+  transition: all .3s linear;
+  background-color: lawngreen;
+
+  &:hover {
+    box-shadow: 2px 8px 45px rgba(0, 0, 0, .15);
+    transform: translateY(-3px);
+  }
+}
+
+.card {
+  @include card;
+  box-shadow: 2px 4px 25px rgba(0, 0, 0, .3);
+  transition: all .3s linear;
+
+  position: relative;
+  transform-style: preserve-3d;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 2px 8px 45px rgba(0, 0, 0, .15);
+    transform: translateY(-3px);
+  }
+}
+
+.card.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.card__face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.card__face--front {
+  @include card;
+  width: 100%;
+  background-color: lightcoral;
+}
+
+.card__face--back {
+  @include card;
+  width: 100%;
+  background-color: ivory;
+  transform: rotateY(180deg);
+}
+
+.beauty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 4px 25px rgba(0, 0, 0, .1);
+  border-radius: 12px;
+  width: 96vw;
+  height: 20vh;
+  margin: 1.5em auto;
+  background-color: crimson;
+}

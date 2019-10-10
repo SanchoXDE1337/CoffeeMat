@@ -1,5 +1,6 @@
 body {
   background-color: beige;
+  font-family: sans-serif;
   user-select: none;
 }
 
@@ -73,10 +74,11 @@ body {
   transform: rotateY(180deg);
 }
 
-.inactive{
+.inactive {
   @include card;
   position: relative;
-  background-color: darkgray;
+  opacity: 0.1;
+  background-color: rgba(#ccc, 0.5);
 }
 
 .button {
@@ -90,6 +92,7 @@ body {
   margin: 4px 2px;
   border-radius: 5em;
   transition: all .3s linear;
+
   &:hover {
     transform: scale(1.1);
   }
@@ -114,6 +117,7 @@ body {
   position: relative;
   box-shadow: 2px 4px 25px rgba(0, 0, 0, .1);
 }
+
 .beauty.is-flipped {
   transform: rotateX(180deg);
 }
@@ -132,8 +136,47 @@ body {
 }
 
 .beauty__face--back {
-  @include beauty;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  border-radius: 12px;
   width: 100%;
   background-color: ivory;
   transform: rotateX(180deg);
+
+  .order {
+    flex-direction: column;
+    justify-content: space-around;
+  }
+
+  .coffee {
+  }
+
+  #cancel {
+    border: none;
+    color: white;
+    padding: 0.2em;
+    text-align: center;
+    text-decoration: none;
+    background: none;
+    transition: all .1s ease-in-out;
+
+    &:hover {
+      transform: scale(1.1);
+      filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+    }
+
+    .cancelIcon {
+      display: inline-block;
+      width: 2em;
+      height: 2em;
+      background-size: cover;
+      background-image: url("./img/close-cross.svg");
+    }
+
+    * {
+      pointer-events: none;
+    }
+  }
 }

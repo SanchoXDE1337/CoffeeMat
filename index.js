@@ -1,48 +1,48 @@
 const menu = [
     {
-        name: "espresso",
+        name: "Espresso",
         volume: 100,
         price: 90
     },
     {
-        name: "latte",
+        name: "Latte",
         volume: 250,
         milk: 100,
         price: 130
     },
     {
-        name: "cappuccino",
+        name: "Cappuccino",
         volume: 250,
         milk: 80,
         price: 110
     },
     {
-        name: "banana latte",
+        name: "Banana Latte",
         volume: 300,
         milk: 100,
         syrup: "banana",
         price: 150
     },
     {
-        name: "vanilla cappuccino",
+        name: "Vanilla Cappuccino",
         volume: 300,
         milk: 80,
         syrup: "vanilla",
         price: 150
     },
     {
-        name: "flat white",
+        name: "Flat White",
         volume: 280,
         milk: 120,
         price: 100
     },
     {
-        name: "milk",
+        name: "Milk",
         volume: 50,
         price: 25
     },
     {
-        name: "cherry syrup",
+        name: "Cherry Syrup",
         volume: 50,
         syrup: "cherry",
         price: 35
@@ -56,21 +56,28 @@ const volumes = {
     cherry: 500
 };
 
+let cards = document.querySelectorAll('.card');
+const buttons = document.querySelectorAll(".button");
 const beauty = document.querySelector(".beauty");
-let clicked = false;
+const coffeeName = document.querySelector("#coffeeName");
+const coffeePrice = document.querySelector("#coffeePrice");
+const coffeeVolume = document.querySelector("#coffeeVolume");
+const cancelButton = document.querySelector("#cancel");
+let cardWasClicked = false;
 let buttonWasClicked = false;
 let clickedElem;
 
 const cardClickHandler = (card) => {
-    if (!clicked) {
+    if (!cardWasClicked) {
         card.classList.toggle('is-flipped');
-        clicked = !clicked;
+        cardWasClicked = !cardWasClicked;
         clickedElem = card;
         console.log(clickedElem.id);
+        console.log(coffeeName);
     } else {
         if (clickedElem === card) {
             card.classList.toggle('is-flipped');
-            clicked = !clicked;
+            cardWasClicked = !cardWasClicked;
             clickedElem = '';
         } else {
             clickedElem.classList.toggle('is-flipped');
@@ -81,8 +88,6 @@ const cardClickHandler = (card) => {
     }
 };
 
-
-let cards = document.querySelectorAll('.card');
 cards.forEach(card => {
     let handler = () => {
         cardClickHandler(card);
@@ -90,22 +95,40 @@ cards.forEach(card => {
     card.addEventListener('click', handler);
 });
 
-let buttons = document.querySelectorAll(".button");
 buttons.forEach(button => {
-    button.addEventListener('click', function () {
+    button.addEventListener('click', async function () {
         button.style.visibility = 'hidden';
         buttonWasClicked = !buttonWasClicked;
         if (buttonWasClicked) {
+            console.log(clickedElem.id);
+            coffeeName.innerHTML = `Вы заказали: ${menu[clickedElem.id].name}`;
+            coffeeVolume.innerHTML = `Объем: ${menu[clickedElem.id].volume}мл`;
+            coffeePrice.innerHTML = `К оплате: ${menu[clickedElem.id].price}р`;
             beauty.classList.toggle('is-flipped');
         }
-        setTimeout(() => {
+        await setTimeout(() => {
             cards.forEach(card => {
                 card.classList.toggle('inactive');
-                card.classList.toggle('card__face--front');
-                card.classList.toggle('card');
+                card.firstElementChild.classList.toggle('card__face--front');
+                card.firstElementChild.classList.toggle('card__face');
                 buttonWasClicked ? card.style.pointerEvents = 'none' : card.style.pointerEvents = 'auto';
             })
         }, 400);
+
+        button.style.visibility = 'visible';
+    })
+});
+
+cancelButton.addEventListener('click', () => {
+    console.log('canceled');
+    beauty.classList.toggle('is-flipped');
+    buttonWasClicked = false;
+    cardWasClicked = false;
+    cards.forEach(card => {
+        card.classList.toggle('inactive');
+        card.firstElementChild.classList.toggle('card__face--front');
+        card.firstElementChild.classList.toggle('card__face');
+        buttonWasClicked ? card.style.pointerEvents = 'none' : card.style.pointerEvents = 'auto';
     })
 });
 

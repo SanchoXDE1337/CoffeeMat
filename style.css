@@ -1,5 +1,6 @@
 body {
   background-color: beige;
+  font-family: sans-serif;
   user-select: none;
 }
 
@@ -93,7 +94,8 @@ body {
   justify-content: center;
   border-radius: 12px;
   position: relative;
-  background-color: darkgray;
+  opacity: 0.1;
+  background-color: rgba(204, 204, 204, 0.5);
 }
 
 .button {
@@ -148,12 +150,40 @@ body {
 
 .beauty__face--back {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   border-radius: 12px;
   width: 100%;
   background-color: ivory;
   transform: rotateX(180deg);
+}
+.beauty__face--back .order {
+  flex-direction: column;
+  justify-content: space-around;
+}
+.beauty__face--back #cancel {
+  border: none;
+  color: white;
+  padding: 0.2em;
+  text-align: center;
+  text-decoration: none;
+  background: none;
+  transition: all 0.1s ease-in-out;
+}
+.beauty__face--back #cancel:hover {
+  transform: scale(1.1);
+  filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+}
+.beauty__face--back #cancel .cancelIcon {
+  display: inline-block;
+  width: 2em;
+  height: 2em;
+  background-size: cover;
+  background-image: url("./img/close-cross.svg");
+}
+.beauty__face--back #cancel * {
+  pointer-events: none;
 }
 
 /*# sourceMappingURL=style.css.map */

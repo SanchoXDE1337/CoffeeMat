@@ -62,6 +62,12 @@ const beauty = document.querySelector(".beauty");
 const coffeeName = document.querySelector("#coffeeName");
 const coffeePrice = document.querySelector("#coffeePrice");
 const coffeeVolume = document.querySelector("#coffeeVolume");
+const milkMinusButton = document.querySelector(".button-minus.milk");
+const milkPlusButton = document.querySelector(".button-plus.milk");
+const milkQuantityField = document.querySelector(".quantity-field.milk");
+const syrupMinusButton = document.querySelector(".button-minus.syrup");
+const syrupPlusButton = document.querySelector(".button-plus.syrup");
+const syrupQuantityField = document.querySelector(".quantity-field.syrup");
 const cancelButton = document.querySelector("#cancel");
 let cardWasClicked = false;
 let buttonWasClicked = false;
@@ -72,8 +78,6 @@ const cardClickHandler = (card) => {
         card.classList.toggle('is-flipped');
         cardWasClicked = !cardWasClicked;
         clickedElem = card;
-        console.log(clickedElem.id);
-        console.log(coffeeName);
     } else {
         if (clickedElem === card) {
             card.classList.toggle('is-flipped');
@@ -128,8 +132,33 @@ cancelButton.addEventListener('click', () => {
         card.classList.toggle('inactive');
         card.firstElementChild.classList.toggle('card__face--front');
         card.firstElementChild.classList.toggle('card__face');
+        milkQuantityField.value = '0';
+        syrupQuantityField.value = '0';
         buttonWasClicked ? card.style.pointerEvents = 'none' : card.style.pointerEvents = 'auto';
     })
 });
+
+const milkChangeHandler = (value) => {
+    if (value === '+') {
+        milkQuantityField.value = +milkQuantityField.value + 1;
+    } else {
+        milkQuantityField.value = +milkQuantityField.value - 1;
+    }
+};
+
+const syrupChangeHandler = (value) => {
+    let quantity = +syrupQuantityField.value;
+    if ((value === '+') && (quantity < 2)) {
+        syrupQuantityField.value = `${++quantity}`;
+    } else if((value === '-') && (quantity > 0)){
+        syrupQuantityField.value = `${--quantity}`;
+    }
+};
+
+milkPlusButton.addEventListener('click', () => milkChangeHandler(milkPlusButton.value));
+milkMinusButton.addEventListener('click', () => milkChangeHandler(milkMinusButton.value));
+syrupPlusButton.addEventListener('click', () => syrupChangeHandler(syrupPlusButton.value));
+syrupMinusButton.addEventListener('click', () => syrupChangeHandler(syrupMinusButton.value));
+
 
 //volumes[menu[menu.length-1].syrup] -= 50;

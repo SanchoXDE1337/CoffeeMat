@@ -17,6 +17,18 @@
             <p id="coffeeVolume" class="coffee"></p> <!--Объем Кофе-->
             <p id="coffeePrice" class="coffee"></p> <!--Цена Кофе-->
         </div>
+        <div class="input-group">
+            <p>Количество молока:</p>
+            <input type="button" value="-" class="button-minus milk" data-field="quantity">
+            <input type="number" step="1" max="" value="0" name="quantity" class="quantity-field milk">
+            <input type="button" value="+" class="button-plus milk" data-field="quantity">
+        </div>
+        <div class="input-group">
+            <p>Количество сиропа:</p>
+            <input type="button" value="-" class="button-minus syrup" data-field="quantity">
+            <input type="number" step="1" max="" value="0" name="quantity" class="quantity-field syrup">
+            <input type="button" value="+" class="button-plus syrup" data-field="quantity">
+        </div>
         <div>
             <button id="cancel">
                 <span class="cancelIcon"></span>

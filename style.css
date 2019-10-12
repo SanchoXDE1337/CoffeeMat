@@ -157,6 +157,7 @@ body {
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
+  padding: 1rem 1rem 1rem 3rem;
   border-radius: 12px;
   width: 100%;
   background-color: ivory;
@@ -165,6 +166,9 @@ body {
 .beauty__face--back .order {
   flex-direction: column;
   justify-content: space-around;
+}
+.beauty__face--back > div {
+  padding: 1rem;
 }
 .beauty__face--back #cancel {
   border: none;
@@ -186,11 +190,12 @@ body {
   background-size: cover;
   background-image: url("./img/close-cross.svg");
 }
-.beauty__face--back #cancel * {
+.beauty__face--back #cancel .cancelIcon {
   pointer-events: none;
 }
 
 .input-group {
+  display: none;
   clear: both;
   position: relative;
 }

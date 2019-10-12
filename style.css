@@ -12,8 +12,9 @@ body {
   justify-items: stretch;
   padding: 0 1.5em;
 }
-.container:nth-child(8) {
-  grid-row: 2/4;
+.container div:nth-child(8) {
+  grid-column: 2/4;
+  grid-row: 3;
 }
 
 #cash {

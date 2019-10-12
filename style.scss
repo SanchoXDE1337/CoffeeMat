@@ -21,9 +21,10 @@ body {
   grid-gap: 1.5em;
   justify-items: stretch;
   padding: 0 1.5em;
-  &:nth-child(8) {
-    //grid-column: 3;
-    grid-row: 2 / 4;
+
+  div:nth-child(8) {
+    grid-column: 2 / 4;
+    grid-row: 3;
   }
 }
 

@@ -139,10 +139,11 @@ cancelButton.addEventListener('click', () => {
 });
 
 const milkChangeHandler = (value) => {
+    let quantity = +milkQuantityField.value;
     if (value === '+') {
-        milkQuantityField.value = +milkQuantityField.value + 1;
-    } else {
-        milkQuantityField.value = +milkQuantityField.value - 1;
+        milkQuantityField.value = `${++quantity}`;
+    } else if ((value === '-') && (quantity > 0)) {
+        milkQuantityField.value = `${--quantity}`;
     }
 };
 
@@ -150,7 +151,7 @@ const syrupChangeHandler = (value) => {
     let quantity = +syrupQuantityField.value;
     if ((value === '+') && (quantity < 2)) {
         syrupQuantityField.value = `${++quantity}`;
-    } else if((value === '-') && (quantity > 0)){
+    } else if ((value === '-') && (quantity > 0)) {
         syrupQuantityField.value = `${--quantity}`;
     }
 };

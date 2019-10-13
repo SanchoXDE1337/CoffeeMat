@@ -58,12 +58,12 @@ const volumes = {
 
 const cups = {
     small: {
-        volume:250,
-        quantity:5
+        volume: 250,
+        quantity: 5
     },
     big: {
-        volume:380,
-        quantity:6
+        volume: 380,
+        quantity: 6
     }
 };
 
@@ -115,12 +115,10 @@ const cardClickHandler = (card) => {
         if (clickedElem === card) {
             card.classList.toggle('is-flipped');
             cardWasClicked = !cardWasClicked;
-            clickedElem = '';
         } else {
             clickedElem.classList.toggle('is-flipped');
             card.classList.toggle('is-flipped');
             clickedElem = card;
-            console.log(clickedElem.id);
         }
     }
 };
@@ -136,11 +134,8 @@ buttons.forEach(button => {
     button.addEventListener('click', async function () {
         button.style.visibility = 'hidden';
         let id = +clickedElem.id;
-        console.log(clickedElem)
         buttonWasClicked = !buttonWasClicked;
         if (buttonWasClicked) {
-            console.log(id);
-            console.log(additiveChangers);
             coffeeName.innerHTML = `${menu[id].name}`;
             coffeeVolume.innerHTML = `${menu[id].volume}`;
             coffeePrice.innerHTML = `${menu[id].price}`;
@@ -152,6 +147,9 @@ buttons.forEach(button => {
             }
         }
         await setTimeout(() => {
+            button.style.visibility = 'visible'
+        }, 800); //Чтобы появление кнопки не вызывало глитчи
+        await setTimeout(() => {
             cards.forEach(card => {
                 card.classList.toggle('inactive');
                 card.firstElementChild.classList.toggle('card__face--front');
@@ -159,9 +157,6 @@ buttons.forEach(button => {
                 buttonWasClicked ? card.style.pointerEvents = 'none' : card.style.pointerEvents = 'auto';
             })
         }, 400);
-
-        button.style.visibility = 'visible';
-        console.log(clickedElem); //???
     })
 });
 
@@ -232,17 +227,13 @@ const syrupChangeHandler = (value) => {
 };*/
 
 
-
-
-
-
 const additiveChangeHandler = (additive, value) => {
     let quantity;
     let whatWeAdd;
     if (additive === 'milk') {
         quantity = milkQuantityField;
         whatWeAdd = menu[6];
-    } else if (additive === 'syrup'){
+    } else if (additive === 'syrup') {
         quantity = syrupQuantityField;
         whatWeAdd = menu[7];
     }

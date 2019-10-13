@@ -110,6 +110,7 @@ const syrupMinusButton = document.querySelector(".button-minus.syrup");
 const syrupPlusButton = document.querySelector(".button-plus.syrup");
 const syrupQuantityField = document.querySelector(".quantity-field.syrup");
 const cancelButton = document.querySelector("#cancel");
+const cashButton = document.querySelector("#cash");
 
 let cardWasClicked = false;
 let buttonWasClicked = false;
@@ -142,8 +143,17 @@ cards.forEach(card => {
 
 buttons.forEach(button => {
     button.addEventListener('click', async function () {
-        button.style.visibility = 'hidden';
         let id = +clickedElem.id;
+        if ((menu[id].volume > 250) && (cups.big.quantity === 0) && (cups.small.quantity !== 0)) {
+            return alert('Простите, закончились подходящие стаканчики. Выберите что-нибудь другое!')
+        }
+        if ((cups.small.quantity === 0) && (cups.big.quantity !== 0)) {
+            currentCup = cups.big;
+        }
+        if ((cups.small.quantity === 0) && (cups.big.quantity === 0)) {
+            return alert('Простите, закончились все стаканчики. Приходите позднее!')
+        }
+        button.style.visibility = 'hidden';
         buttonWasClicked = !buttonWasClicked;
         if (buttonWasClicked) {
             coffeeName.innerHTML = `${menu[id].name}`;
@@ -227,13 +237,18 @@ const additiveChangeHandler = (additive, value) => {
                 } else {
                     milkPlusButton.setAttribute("disabled", "disabled");
                     syrupPlusButton.setAttribute("disabled", "disabled");
-                    alert('Отсутствуют стаканчики большего размера! Пожалуйста, измените свой заказ');
+                    alert('Отсутствуют стаканчики большего размера. Оплачивайте или измените заказ!');
                     return false;
                 }
             }
-                if ((volume <= 300)) {
-                    return true;
-                }
+            if (volume === 350) {
+                milkPlusButton.setAttribute("disabled", "disabled");
+                syrupPlusButton.setAttribute("disabled", "disabled");
+                alert('Достигнут максимальный объем напитка. Оплачивайте!');
+            }
+            if ((volume <= 300)) {
+                return true;
+            }
         };
         if (canWeIncreaseAdditive()) {
             quantity.value = `${++quantity.value}`;
@@ -247,7 +262,7 @@ const additiveChangeHandler = (additive, value) => {
         coffeePrice.innerHTML = `${price - whatWeAdd.price}`;
         milkPlusButton.removeAttribute("disabled");
         syrupPlusButton.removeAttribute("disabled");
-        if ((volume <= 250) && (cups.small.quantity > 0)){
+        if ((volume <= 250) && (cups.small.quantity > 0)) {
             currentCup = cups.small;
         }
     }
@@ -265,3 +280,9 @@ syrupPlusButton.addEventListener('click',
 
 syrupMinusButton.addEventListener('click',
     () => additiveChangeHandler('syrup', syrupMinusButton.value));
+
+cashButton.addEventListener('click', () => {
+    let id = +clickedElem.id;
+    let coffee = menu[id];
+
+});

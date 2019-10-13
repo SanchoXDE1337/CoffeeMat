@@ -212,10 +212,8 @@ body {
 .input-group input[type=button] {
   -webkit-appearance: button;
   cursor: pointer;
-  background-color: #eeeeee;
   min-width: 38px;
   width: auto;
-  transition: all 300ms ease;
 }
 .input-group .button-plus {
   left: -13px;

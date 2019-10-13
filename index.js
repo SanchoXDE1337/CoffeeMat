@@ -69,18 +69,28 @@ const cups = {
 
 //================ TODO:данные выше импортятся из другого файла
 
-/*const canWeMakeCoffee = () => {
+const doWeHaveIngredients = () => {
     //проверка на наличие молока ^
-    //проверка на наличие сиропа
-    //проверка на наличие стаканчика
-    //проверка на то, что это влезет в стакан
-    let yesWeCan = true;
+    //проверка на наличие сиропа для авторских ^
+    //проверка на наличие сиропа для эспрессо ^
+    //проверка на наличие стаканчика ^
+    //проверка на то, что кастомный эспрессо влезет в стакан
+    let yesWeHave = true;
     let coffee = menu[clickedElem.id];
-    if (volumes.milk - coffee.milk - milkQuantityField.value * menu[6].volume <= 0) {
-        return yesWeCan = false;
+    if (volumes.milk - coffee.milk - milkQuantityField.value * menu[6].volume < 0) {
+        return yesWeHave = false;
     }
-    if (volumes[coffee.syrup] === )
-};*/
+    if ((volumes[coffee.syrup]) && (volumes[coffee.syrup] - coffee.syrup < 0)) {
+        return yesWeHave = false;
+    }
+    if (volumes["cherry"] - syrupQuantityField.value * menu[7].volume < 0) {
+        return yesWeHave = false;
+    }
+    if (currentCup.quantity === 0) {
+        return yesWeHave = false;
+    }
+    return yesWeHave;
+};
 
 
 let cards = document.querySelectorAll('.card');
@@ -196,40 +206,12 @@ const whatWeShouldPrint = () => {
             coffeeAdditiveSyrup.innerHTML = '';
     }
 };
-/*
-const milkChangeHandler = (value) => {
-    let quantity = +milkQuantityField.value;
-    if (value === '+') {
-        milkQuantityField.value = `${++quantity}`;
-        coffeeVolume.innerHTML = +coffeeVolume.innerHTML + menu[6].volume;
-        coffeePrice.innerHTML = +coffeePrice.innerHTML + menu[6].price;
-    } else if ((value === '-') && (quantity > 0)) {
-        milkQuantityField.value = `${--quantity}`;
-        coffeeVolume.innerHTML = +coffeeVolume.innerHTML - menu[6].volume;
-        coffeePrice.innerHTML = +coffeePrice.innerHTML - menu[6].price;
-    }
-    whatWeShouldPrint();
-};*/
-
-/*
-const syrupChangeHandler = (value) => {
-    let quantity = +syrupQuantityField.value;
-    if ((value === '+') && (quantity < syrupQuantityField.max)) {
-        syrupQuantityField.value = `${++quantity}`;
-        coffeeVolume.innerHTML = +coffeeVolume.innerHTML + menu[7].volume;
-        coffeePrice.innerHTML = +coffeePrice.innerHTML + menu[7].price;
-    } else if ((value === '-') && (quantity > 0)) {
-        syrupQuantityField.value = `${--quantity}`;
-        coffeeVolume.innerHTML = +coffeeVolume.innerHTML - menu[7].volume;
-        coffeePrice.innerHTML = +coffeePrice.innerHTML - menu[7].price;
-    }
-    whatWeShouldPrint();
-};*/
-
 
 const additiveChangeHandler = (additive, value) => {
     let quantity;
     let whatWeAdd;
+    let volume = +coffeeVolume.innerHTML;
+    let price = +coffeePrice.innerHTML;
     if (additive === 'milk') {
         quantity = milkQuantityField;
         whatWeAdd = menu[6];
@@ -238,13 +220,36 @@ const additiveChangeHandler = (additive, value) => {
         whatWeAdd = menu[7];
     }
     if ((value === '+') && (quantity.value < quantity.max)) {
-        quantity.value = `${++quantity.value}`;
-        coffeeVolume.innerHTML = +coffeeVolume.innerHTML + whatWeAdd.volume;
-        coffeePrice.innerHTML = +coffeePrice.innerHTML + whatWeAdd.price;
-    } else if ((value === '-') && (quantity.value > 0)) {
+        const canWeIncreaseAdditive = () => {
+            if ((currentCup.volume === 250) && (volume === 250)) {
+                if (cups.big.quantity > 0) {
+                    currentCup = cups.big;
+                } else {
+                    milkPlusButton.setAttribute("disabled", "disabled");
+                    syrupPlusButton.setAttribute("disabled", "disabled");
+                    alert('Отсутствуют стаканчики большего размера! Пожалуйста, измените свой заказ');
+                    return false;
+                }
+            }
+                if ((volume <= 300)) {
+                    return true;
+                }
+        };
+        if (canWeIncreaseAdditive()) {
+            quantity.value = `${++quantity.value}`;
+            coffeeVolume.innerHTML = volume + whatWeAdd.volume;
+            coffeePrice.innerHTML = `${price + whatWeAdd.price}`;
+        }
+    }
+    if ((value === '-') && (quantity.value > 0)) {
         quantity.value = `${--quantity.value}`;
-        coffeeVolume.innerHTML = +coffeeVolume.innerHTML - whatWeAdd.volume;
-        coffeePrice.innerHTML = +coffeePrice.innerHTML - whatWeAdd.price;
+        coffeeVolume.innerHTML = `${volume - whatWeAdd.volume}`;
+        coffeePrice.innerHTML = `${price - whatWeAdd.price}`;
+        milkPlusButton.removeAttribute("disabled");
+        syrupPlusButton.removeAttribute("disabled");
+        if ((volume <= 250) && (cups.small.quantity > 0)){
+            currentCup = cups.small;
+        }
     }
     whatWeShouldPrint();
 };

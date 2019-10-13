@@ -56,6 +56,33 @@ const volumes = {
     cherry: 500
 };
 
+const cups = {
+    small: {
+        volume:250,
+        quantity:5
+    },
+    big: {
+        volume:380,
+        quantity:6
+    }
+};
+
+//================ TODO:данные выше импортятся из другого файла
+
+/*const canWeMakeCoffee = () => {
+    //проверка на наличие молока ^
+    //проверка на наличие сиропа
+    //проверка на наличие стаканчика
+    //проверка на то, что это влезет в стакан
+    let yesWeCan = true;
+    let coffee = menu[clickedElem.id];
+    if (volumes.milk - coffee.milk - milkQuantityField.value * menu[6].volume <= 0) {
+        return yesWeCan = false;
+    }
+    if (volumes[coffee.syrup] === )
+};*/
+
+
 let cards = document.querySelectorAll('.card');
 const buttons = document.querySelectorAll(".button");
 const beauty = document.querySelector(".beauty");
@@ -73,9 +100,11 @@ const syrupMinusButton = document.querySelector(".button-minus.syrup");
 const syrupPlusButton = document.querySelector(".button-plus.syrup");
 const syrupQuantityField = document.querySelector(".quantity-field.syrup");
 const cancelButton = document.querySelector("#cancel");
+
 let cardWasClicked = false;
 let buttonWasClicked = false;
 let clickedElem;
+let currentCup = cups.small;
 
 const cardClickHandler = (card) => {
     if (!cardWasClicked) {
@@ -107,6 +136,7 @@ buttons.forEach(button => {
     button.addEventListener('click', async function () {
         button.style.visibility = 'hidden';
         let id = +clickedElem.id;
+        console.log(clickedElem)
         buttonWasClicked = !buttonWasClicked;
         if (buttonWasClicked) {
             console.log(id);
@@ -131,6 +161,7 @@ buttons.forEach(button => {
         }, 400);
 
         button.style.visibility = 'visible';
+        console.log(clickedElem); //???
     })
 });
 
@@ -199,6 +230,11 @@ const syrupChangeHandler = (value) => {
     }
     whatWeShouldPrint();
 };*/
+
+
+
+
+
 
 const additiveChangeHandler = (additive, value) => {
     let quantity;

@@ -188,7 +188,7 @@ body {
   width: 2em;
   height: 2em;
   background-size: cover;
-  background-image: url("./img/close-cross.svg");
+  background-image: url("../img/close-cross.svg");
 }
 .beauty__face--back #cancel .cancelIcon {
   pointer-events: none;

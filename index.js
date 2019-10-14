@@ -69,7 +69,7 @@ const cups = {
 
 //================ TODO:данные выше импортятся из другого файла
 
-const doWeHaveIngredients = () => {
+/*const doWeHaveIngredients = () => {
     //проверка на наличие молока ^
     //проверка на наличие сиропа для авторских ^
     //проверка на наличие сиропа для эспрессо ^
@@ -90,7 +90,7 @@ const doWeHaveIngredients = () => {
         return yesWeHave = false;
     }
     return yesWeHave;
-};
+};*/
 
 
 let cards = document.querySelectorAll('.card');
@@ -115,7 +115,8 @@ const cashButton = document.querySelector("#cash");
 let cardWasClicked = false;
 let buttonWasClicked = false;
 let clickedElem;
-let currentCup = cups.small;
+let currentCup;
+cashButton.style.pointerEvents = 'none';
 
 const cardClickHandler = (card) => {
     if (!cardWasClicked) {
@@ -143,11 +144,18 @@ cards.forEach(card => {
 
 buttons.forEach(button => {
     button.addEventListener('click', async function () {
+        cashButton.style.pointerEvents = 'auto';
         let id = +clickedElem.id;
+        if (menu[id].volume <= 250) {
+            currentCup = cups.small;
+        }
         if ((menu[id].volume > 250) && (cups.big.quantity === 0) && (cups.small.quantity !== 0)) {
             return alert('Простите, закончились подходящие стаканчики. Выберите что-нибудь другое!')
         }
         if ((cups.small.quantity === 0) && (cups.big.quantity !== 0)) {
+            currentCup = cups.big;
+        }
+        if ((menu[id].volume > 250) && (cups.big.quantity !== 0)) {
             currentCup = cups.big;
         }
         if ((cups.small.quantity === 0) && (cups.big.quantity === 0)) {
@@ -180,11 +188,12 @@ buttons.forEach(button => {
     })
 });
 
-cancelButton.addEventListener('click', () => {
+const cancelButtonHandler =() => {
     console.log('canceled');
     beauty.classList.toggle('is-flipped');
     buttonWasClicked = false;
     cardWasClicked = false;
+    cashButton.style.pointerEvents = 'none';
     cards.forEach(card => {
         card.classList.toggle('inactive');
         card.firstElementChild.classList.toggle('card__face--front');
@@ -197,6 +206,10 @@ cancelButton.addEventListener('click', () => {
         whatWeShouldPrint();
         buttonWasClicked ? card.style.pointerEvents = 'none' : card.style.pointerEvents = 'auto';
     })
+};
+
+cancelButton.addEventListener('click', () => {
+    cancelButtonHandler();
 });
 
 const whatWeShouldPrint = () => {
@@ -225,9 +238,17 @@ const additiveChangeHandler = (additive, value) => {
     if (additive === 'milk') {
         quantity = milkQuantityField;
         whatWeAdd = menu[6];
+        if ((value === '+') && (volumes.milk <= quantity.value * 50)) {
+            milkPlusButton.setAttribute("disabled", "disabled");
+            return alert('Не могу добавить еще молока, оно закончилось');
+        }
     } else if (additive === 'syrup') {
         quantity = syrupQuantityField;
         whatWeAdd = menu[7];
+        if ((value === '+') && (volumes.cherry <= quantity.value * 50)) {
+            syrupPlusButton.setAttribute("disabled", "disabled");
+            return alert('Не могу добавить еще сиропа, он закончился');
+        }
     }
     if ((value === '+') && (quantity.value < quantity.max)) {
         const canWeIncreaseAdditive = () => {
@@ -266,6 +287,9 @@ const additiveChangeHandler = (additive, value) => {
             currentCup = cups.small;
         }
     }
+    if (quantity.value === quantity.max) {
+        syrupPlusButton.setAttribute("disabled", "disabled");
+    }
     whatWeShouldPrint();
 };
 
@@ -284,5 +308,57 @@ syrupMinusButton.addEventListener('click',
 cashButton.addEventListener('click', () => {
     let id = +clickedElem.id;
     let coffee = menu[id];
+    /*    let price = +coffeePrice.innerHTML;  */
+    if ((coffee.syrup !== undefined) || (id === 0)) {
+        id === 0 ? (
+            volumes['cherry'] -= +syrupQuantityField.value * menu[7].volume
+        ) : (
+            volumes[coffee.syrup] -= 50
+        );
+    }
+    if ((coffee.milk !== undefined) || (id === 0)) {
+        id === 0 ? (
+            volumes.milk -= +milkQuantityField.value * menu[6].volume
+        ) : (
+            volumes.milk -= coffee.milk
+        );
+    }
+    currentCup.quantity -= 1;
+    cancelButtonHandler();
+    cashButton.style.pointerEvents = 'none';
+    console.log(volumes);
+    console.log(cups);
 
 });
+
+const ProgressBar = require('progressbar.js');
+let bar = new ProgressBar.Line(container, {
+    strokeWidth: 4,
+    easing: 'easeInOut',
+    duration: 5000,
+    color: '#FFEA82',
+    trailColor: '#eee',
+    trailWidth: 1,
+    svgStyle: {width: '100%', height: '100%'},
+    text: {
+        style: {
+            // Text color.
+            // Default: same as stroke color (options.color)
+            color: '#999',
+            position: 'absolute',
+            right: '0',
+            top: '30px',
+            padding: 0,
+            margin: 0,
+            transform: null
+        },
+        autoStyleContainer: false
+    },
+    from: {color: '#FFEA82'},
+    to: {color: '#ED6A5A'},
+    step: (state, bar) => {
+        bar.setText(Math.round(bar.value() * 100) + ' %');
+    }
+});
+
+bar.animate(1.0);

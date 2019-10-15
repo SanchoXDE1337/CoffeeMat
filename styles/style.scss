@@ -1,0 +1,280 @@
+body {
+  background-color: beige;
+  font-family: sans-serif;
+  user-select: none;
+}
+
+@mixin card {
+  width: 1fr;
+  height: 20vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.container {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 1.5em;
+  justify-items: stretch;
+  padding: 0 1.5em;
+
+  div:nth-child(8) {
+    grid-column: 2 / 4;
+    grid-row: 3;
+  }
+}
+
+#cash {
+  @include card;
+  box-shadow: 2px 4px 25px rgba(0, 0, 0, .3);
+  transition: all .3s linear;
+  background-color: lawngreen;
+
+  &:hover {
+    box-shadow: 2px 8px 45px rgba(0, 0, 0, .15);
+    transform: translateY(-3px);
+  }
+}
+
+.card {
+  @include card;
+  box-shadow: 2px 4px 25px rgba(0, 0, 0, .3);
+  transition: all .3s linear;
+
+  position: relative;
+  transform-style: preserve-3d;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 2px 8px 45px rgba(0, 0, 0, .15);
+    transform: translateY(-3px);
+  }
+}
+
+.card.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.card__face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.card__face--front {
+  @include card;
+  width: 100%;
+  background-color: lightcoral;
+}
+
+.card__face--back {
+  @include card;
+  width: 100%;
+  background-color: ivory;
+  transform: rotateY(180deg);
+}
+
+.inactive {
+  @include card;
+  position: relative;
+  opacity: 0.1;
+  background-color: rgba(#ccc, 0.5);
+}
+
+.button {
+  background-color: limegreen;
+  border: none;
+  color: white;
+  padding: 0.2em;
+  text-align: center;
+  text-decoration: none;
+  font-size: 2.5em;
+  margin: 4px 2px;
+  border-radius: 5em;
+  transition: all .3s linear;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+@mixin beauty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.beauty {
+  @include beauty;
+
+  width: 96vw;
+  height: 20vh;
+  margin: 1.5em auto;
+
+  transition: all .3s linear;
+  transform-style: preserve-3d;
+  position: relative;
+  box-shadow: 2px 4px 25px rgba(0, 0, 0, .1);
+}
+
+.beauty.is-flipped {
+  transform: rotateX(180deg);
+}
+
+.beauty__face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.beauty__face--front {
+  @include beauty;
+  width: 100%;
+  background-color: crimson;
+}
+
+.beauty__face--back {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  padding: 1rem 1rem 1rem 3rem;
+  border-radius: 12px;
+  width: 100%;
+  background-color: ivory;
+  transform: rotateX(180deg);
+
+  .order {
+    flex-direction: column;
+    justify-content: space-around;
+  }
+
+  & > div {
+    padding: 1rem;
+  }
+
+  #cancel {
+    border: none;
+    color: white;
+    padding: 0.2em;
+    text-align: center;
+    text-decoration: none;
+    background: none;
+    transition: all .1s ease-in-out;
+
+    &:hover {
+      transform: scale(1.1);
+      filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+    }
+
+    .cancelIcon {
+      display: inline-block;
+      width: 2em;
+      height: 2em;
+      background-size: cover;
+      background-image: url("../img/close-cross.svg");
+    }
+
+    .cancelIcon {
+      pointer-events: none;
+    }
+  }
+}
+
+
+.input-group {
+  display: none;
+  clear: both;
+  position: relative;
+
+  input {
+    border: 1px solid #eeeeee;
+    box-sizing: border-box;
+    margin: 0;
+    outline: none;
+    padding: 10px;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+  }
+
+  input[type="button"] {
+    -webkit-appearance: button;
+    cursor: pointer;
+    min-width: 38px;
+    width: auto;
+  }
+
+  .button-plus {
+    left: -13px;
+  }
+
+  .button-minus, .button-plus {
+    font-weight: bold;
+    height: 2em;
+    padding: 0;
+    width: 2em;
+    position: relative;
+  }
+
+  .quantity-field {
+    position: relative;
+    height: 2rem;
+    left: -6px;
+    top: 1px;
+    text-align: center;
+    width: 4rem;
+    display: inline-block;
+    font-size: 1.3rem;
+    margin: 0 0;
+    resize: vertical;
+  }
+
+}
+
+.cooking {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+
+  #progressBar {
+    margin: 20px;
+    width: 30rem;
+    height: 1rem;
+    position: relative;
+  }
+
+  @keyframes blink {
+    50% {
+      border-color: darkorchid;
+    }
+  }
+
+  .coffeeCup {
+    width: 50vw;
+    height: 50vh;
+    display: none;
+    transition: all .2s ease-in-out;
+    border: 4px solid;
+    animation: blink .5s step-end infinite alternate;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}
+
+
+

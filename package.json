@@ -1,11 +1,12 @@
 {
-  "name": "coffeemat",
+  "name": "sanchoxde1337",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.js",
+  "homepage":"https://sanchoxde1337.github.io/CoffeeMat/",
   "scripts": {
     "build": "npx webpack --config=./webpack.config.js",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d target"
   },
   "author": "SanchoXD",
   "license": "ISC",

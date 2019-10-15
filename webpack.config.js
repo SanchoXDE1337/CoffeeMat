@@ -9,7 +9,7 @@ module.exports = {
     },
     output: {
         path: output,
-        publicPath: "/CoffeeMat/",
+        publicPath: "https://sanchoxde1337.github.io/CoffeeMat/",
         filename: "index.js"
     },
     module: {

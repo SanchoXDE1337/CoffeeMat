@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CoffeeMat</title>
+    <link rel="stylesheet" href="../src/styles/normalize.css">
+    <link rel="stylesheet" href="../src/styles/style.css">
+</head>
+<body>
+<div class="beauty">
+    <div class="beauty__face beauty__face--front">
+        <h1>K P A C U B O</h1>
+    </div>
+    <div class="beauty__face beauty__face--back">
+        <div class="order">
+            <p class="coffee">Вы заказали:
+                <span id="coffeeName"></span> <!--Название Кофе-->
+                <span id="additiveMilk"></span>
+                <span id="additiveSyrup"></span>
+            </p>
+            <p class="coffee">Объем: <span id="coffeeVolume"></span>мл</p> <!--Объем Кофе-->
+            <p class="coffee">К оплате: <span id="coffeePrice"></span>р</p> <!--Цена Кофе-->
+        </div>
+        <div class="input-group">
+            <p>Количество молока:</p>
+            <input type="button" value="-" class="button-minus milk" data-field="quantity">
+            <input type="number" step="1" max="7" value="0" name="quantity" class="quantity-field milk">
+            <input type="button" value="+" class="button-plus milk" data-field="quantity">
+        </div>
+        <div class="input-group">
+            <p>Количество сиропа:</p>
+            <input type="button" value="-" class="button-minus syrup" data-field="quantity">
+            <input type="number" step="1" max="2" value="0" name="quantity" class="quantity-field syrup">
+            <input type="button" value="+" class="button-plus syrup" data-field="quantity">
+        </div>
+        <div>
+            <button id="cancel">
+                <span class="cancelIcon"></span>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="card" id="0">
+        <div class="card__face card__face--front">
+            <p>Эспрессо</p>
+            <p>Цена 90р</p>
+        </div>
+        <div class="card__face card__face--back">
+            <p>Объем 100мл</p>
+            <button class="button">+</button>
+        </div>
+    </div>
+    <div class="card" id="1">
+        <div class="card__face card__face--front">
+            <p>Латте</p>
+            <p>Цена 130р</p>
+        </div>
+        <div class="card__face card__face--back">
+            <p>Объем 250мл</p>
+            <button class="button">+</button>
+        </div>
+    </div>
+    <div class="card" id="2">
+        <div class="card__face card__face--front">
+            <p>Капучино</p>
+            <p>Цена 110р</p>
+        </div>
+        <div class="card__face card__face--back">
+            <p>Объем 250мл</p>
+            <button class="button">+</button>
+        </div>
+    </div>
+    <div class="card" id="3">
+        <div class="card__face card__face--front">
+            <p>Банановый латте</p>
+            <p>Цена 150р</p>
+        </div>
+        <div class="card__face card__face--back">
+            <p>Объем 300мл</p>
+            <button class="button">+</button>
+        </div>
+    </div>
+    <div class="card" id="4">
+        <div class="card__face card__face--front">
+            <p>Ванильный капучино</p>
+            <p>Цена 150р</p>
+        </div>
+        <div class="card__face card__face--back">
+            <p>Объем 300мл</p>
+            <button class="button">+</button>
+        </div>
+    </div>
+    <div class="card" id="5">
+        <div class="card__face card__face--front">
+            <p>Флэт Уайт</p>
+            <p>Цена 100р</p>
+        </div>
+        <div class="card__face card__face--back">
+            <p>Объем 280мл</p>
+            <button class="button">+</button>
+        </div>
+    </div>
+    <div class="card" id="6">
+        <div class="card__face card__face--front">
+            <p>Молоко</p>
+            <p>Цена 25р</p>
+        </div>
+        <div class="card__face card__face--back">
+            <p>Объем 50мл</p>
+            <button class="button">+</button>
+        </div>
+    </div>
+    <div id="cash">Оплата</div>
+</div>
+<div class="cooking">
+    <div id="progressBar"></div>
+    <div class="coffeeCup"></div>
+    <audio id="audio" src="../music/13-game-over.mp3" ></audio>
+</div>
+<script src="./index.js"></script>
+</body>
+</html>

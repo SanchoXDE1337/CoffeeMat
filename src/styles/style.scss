@@ -179,7 +179,7 @@ body {
       width: 2em;
       height: 2em;
       background-size: cover;
-      background-image: url("../img/close-cross.svg");
+      background-image: url("../../img/close-cross.svg");
     }
 
     .cancelIcon {
@@ -210,10 +210,8 @@ body {
   input[type="button"] {
     -webkit-appearance: button;
     cursor: pointer;
-    //background-color: #eeeeee;
     min-width: 38px;
     width: auto;
-    //transition: all 300ms ease;
   }
 
   .button-plus {
@@ -243,10 +241,40 @@ body {
 
 }
 
-#progressBar {
-  margin: 20px auto;
-  width: 400px;
-  height: 8px;
-  position: relative;
+.cooking {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+
+  #progressBar {
+    margin: 20px;
+    width: 30rem;
+    height: 1rem;
+    position: relative;
+  }
+
+  @keyframes blink {
+    50% {
+      border-color: darkorchid;
+    }
+  }
+
+  .coffeeCup {
+    width: 50vw;
+    height: 50vh;
+    display: none;
+    transition: all .2s ease-in-out;
+    border: 4px solid;
+    animation: blink .5s step-end infinite alternate;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
 }
+
+
 

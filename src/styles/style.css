@@ -188,7 +188,7 @@ body {
   width: 2em;
   height: 2em;
   background-size: cover;
-  background-image: url("../img/close-cross.svg");
+  background-image: url("../../img/close-cross.svg");
 }
 .beauty__face--back #cancel .cancelIcon {
   pointer-events: none;
@@ -238,11 +238,35 @@ body {
   resize: vertical;
 }
 
-#progressBar {
-  margin: 20px auto;
-  width: 400px;
-  height: 8px;
+.cooking {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+}
+.cooking #progressBar {
+  margin: 20px;
+  width: 30rem;
+  height: 1rem;
   position: relative;
+}
+@keyframes blink {
+  50% {
+    border-color: darkorchid;
+  }
+}
+.cooking .coffeeCup {
+  width: 50vw;
+  height: 50vh;
+  display: none;
+  transition: all 0.2s ease-in-out;
+  border: 4px solid;
+  animation: blink 0.5s step-end infinite alternate;
+}
+.cooking .coffeeCup:hover {
+  transform: scale(1.05);
 }
 
 /*# sourceMappingURL=style.css.map */

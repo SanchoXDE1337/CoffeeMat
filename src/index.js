@@ -39,6 +39,7 @@ const menu = [
     {
         name: "Milk",
         volume: 50,
+        milk: 50,
         price: 25
     },
     {
@@ -69,30 +70,6 @@ const cups = {
 
 //================ TODO:данные выше импортятся из другого файла
 
-/*const doWeHaveIngredients = () => {
-    //проверка на наличие молока ^
-    //проверка на наличие сиропа для авторских ^
-    //проверка на наличие сиропа для эспрессо ^
-    //проверка на наличие стаканчика ^
-    //проверка на то, что кастомный эспрессо влезет в стакан
-    let yesWeHave = true;
-    let coffee = menu[clickedElem.id];
-    if (volumes.milk - coffee.milk - milkQuantityField.value * menu[6].volume < 0) {
-        return yesWeHave = false;
-    }
-    if ((volumes[coffee.syrup]) && (volumes[coffee.syrup] - coffee.syrup < 0)) {
-        return yesWeHave = false;
-    }
-    if (volumes["cherry"] - syrupQuantityField.value * menu[7].volume < 0) {
-        return yesWeHave = false;
-    }
-    if (currentCup.quantity === 0) {
-        return yesWeHave = false;
-    }
-    return yesWeHave;
-};*/
-
-
 let cards = document.querySelectorAll('.card');
 const buttons = document.querySelectorAll(".button");
 const beauty = document.querySelector(".beauty");
@@ -111,11 +88,15 @@ const syrupPlusButton = document.querySelector(".button-plus.syrup");
 const syrupQuantityField = document.querySelector(".quantity-field.syrup");
 const cancelButton = document.querySelector("#cancel");
 const cashButton = document.querySelector("#cash");
+const coffeeCup = document.querySelector(".coffeeCup");
+const cookingField = document.querySelector(".cooking");
+const audio = document.querySelector("#audio");
 
 let cardWasClicked = false;
 let buttonWasClicked = false;
 let clickedElem;
 let currentCup;
+let takeAwayCoffee = false;
 cashButton.style.pointerEvents = 'none';
 
 const cardClickHandler = (card) => {
@@ -143,13 +124,14 @@ cards.forEach(card => {
 });
 
 buttons.forEach(button => {
-    button.addEventListener('click', async function () {
-        cashButton.style.pointerEvents = 'auto';
+    button.addEventListener('click', function () {
         let id = +clickedElem.id;
+        let success = true;
         if (menu[id].volume <= 250) {
             currentCup = cups.small;
         }
         if ((menu[id].volume > 250) && (cups.big.quantity === 0) && (cups.small.quantity !== 0)) {
+            success = false;
             return alert('Простите, закончились подходящие стаканчики. Выберите что-нибудь другое!')
         }
         if ((cups.small.quantity === 0) && (cups.big.quantity !== 0)) {
@@ -159,7 +141,12 @@ buttons.forEach(button => {
             currentCup = cups.big;
         }
         if ((cups.small.quantity === 0) && (cups.big.quantity === 0)) {
+            success = false;
             return alert('Простите, закончились все стаканчики. Приходите позднее!')
+        }
+        if ((volumes.milk - menu[id].milk < 0) || (volumes[menu[id].syrup] < 50)) {
+            success = false;
+            return alert('Простите, закончился ингридиент для этого напитка. Выберите что-нибудь другое!')
         }
         button.style.visibility = 'hidden';
         buttonWasClicked = !buttonWasClicked;
@@ -168,16 +155,20 @@ buttons.forEach(button => {
             coffeeVolume.innerHTML = `${menu[id].volume}`;
             coffeePrice.innerHTML = `${menu[id].price}`;
             beauty.classList.toggle('is-flipped');
-            if (id === 0) { //Заказали эспрессо и можем кастомизировать
-                additiveChangers.forEach(changer => changer.style.display = 'block');
+            if ((id === 0) || (id === 6)) { //Заказали эспрессо или молоко и можем кастомизировать
+                id === 0 ? (
+                    additiveChangers.forEach(changer => changer.style.display = 'block')
+                ) : (
+                    additiveChangers[0].style.display = 'block'
+                );
                 beautyFaceBack.style.justifyContent = 'flex-end';
                 beautyFaceBack.firstElementChild.style.marginRight = 'auto';
             }
         }
-        await setTimeout(() => {
+        setTimeout(() => {
             button.style.visibility = 'visible'
         }, 800); //Чтобы появление кнопки не вызывало глитчи
-        await setTimeout(() => {
+        setTimeout(() => {
             cards.forEach(card => {
                 card.classList.toggle('inactive');
                 card.firstElementChild.classList.toggle('card__face--front');
@@ -185,15 +176,19 @@ buttons.forEach(button => {
                 buttonWasClicked ? card.style.pointerEvents = 'none' : card.style.pointerEvents = 'auto';
             })
         }, 400);
+        if (success) {
+            cashButton.style.pointerEvents = 'auto';
+        }
     })
 });
 
-const cancelButtonHandler =() => {
-    console.log('canceled');
+const cancelButtonHandler = () => {
     beauty.classList.toggle('is-flipped');
     buttonWasClicked = false;
     cardWasClicked = false;
     cashButton.style.pointerEvents = 'none';
+    milkPlusButton.removeAttribute("disabled");
+    syrupPlusButton.removeAttribute("disabled");
     cards.forEach(card => {
         card.classList.toggle('inactive');
         card.firstElementChild.classList.toggle('card__face--front');
@@ -213,6 +208,9 @@ cancelButton.addEventListener('click', () => {
 });
 
 const whatWeShouldPrint = () => {
+    if (+clickedElem.id === 6) {
+        return null;
+    }
     if (+milkQuantityField.value !== 0) {
         coffeeAdditiveMilk.innerHTML = (+syrupQuantityField.value === 0 ? ' с молоком' : ' с молоком и ');
     } else {
@@ -238,7 +236,8 @@ const additiveChangeHandler = (additive, value) => {
     if (additive === 'milk') {
         quantity = milkQuantityField;
         whatWeAdd = menu[6];
-        if ((value === '+') && (volumes.milk <= quantity.value * 50)) {
+        if ((value === '+') && (volumes.milk <= quantity.value * 50) ||
+            (+clickedElem.id === 6) && (volumes.milk <= (+quantity.value + 1) * 50)) {
             milkPlusButton.setAttribute("disabled", "disabled");
             return alert('Не могу добавить еще молока, оно закончилось');
         }
@@ -305,10 +304,9 @@ syrupPlusButton.addEventListener('click',
 syrupMinusButton.addEventListener('click',
     () => additiveChangeHandler('syrup', syrupMinusButton.value));
 
-cashButton.addEventListener('click', () => {
+cashButton.addEventListener('click', async () => {
     let id = +clickedElem.id;
     let coffee = menu[id];
-    /*    let price = +coffeePrice.innerHTML;  */
     if ((coffee.syrup !== undefined) || (id === 0)) {
         id === 0 ? (
             volumes['cherry'] -= +syrupQuantityField.value * menu[7].volume
@@ -317,48 +315,115 @@ cashButton.addEventListener('click', () => {
         );
     }
     if ((coffee.milk !== undefined) || (id === 0)) {
-        id === 0 ? (
-            volumes.milk -= +milkQuantityField.value * menu[6].volume
+        (id === 0) || (id === 6) ? (
+            volumes.milk -= +milkQuantityField.value * menu[6].volume + coffee.milk
         ) : (
             volumes.milk -= coffee.milk
         );
     }
     currentCup.quantity -= 1;
+
+    let cookingDuration;
+
+    const ProgressBar = require('progressbar.js');
+    let bar = new ProgressBar.Line(progressBar, {
+        strokeWidth: 4,
+        easing: 'linear',
+        duration: (function () {
+            if ((id === 0) && (+syrupQuantityField.value > 0) || (+milkQuantityField.value > 0)) {
+                cookingDuration = 8000;
+                return 8000;
+            } else if ((id >= 0) && (id <= 2)) {
+                cookingDuration = 3000;
+                return 3000;
+            } else if ((id >= 3) && (id <= 6)) {
+                cookingDuration = 5000;
+                return 5000;
+            }
+        })(),
+        color: '#7cfc00',
+        trailColor: '#eee',
+        trailWidth: 1,
+        svgStyle: {width: '100%', height: '100%'},
+        text: {
+            style: {
+                color: '#999',
+                position: 'absolute',
+                right: '0',
+                top: '30px',
+                padding: 0,
+                margin: 0,
+                transform: null
+            },
+            autoStyleContainer: false
+        },
+        step: (state, bar) => {
+            bar.setText(Math.round(bar.value() * 100) + ' %');
+        }
+    });
+
+    milkPlusButton.removeAttribute("disabled");
+    syrupPlusButton.removeAttribute("disabled");
     cancelButtonHandler();
     cashButton.style.pointerEvents = 'none';
     console.log(volumes);
     console.log(cups);
+    cookingField.style.display = 'flex';
+    window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
+    });
 
+    bar.animate(1.0);
+
+    coffeeCup.style.background = (function (id) {
+        switch (id) {
+            case 0:
+                return 'url(https://teremok.ru/upload/iblock/4b4/5709d5f2-bb2b-11e8-af7c-001517db825c.png) no-repeat center';
+            case 1:
+                return 'url(http://www.myasnov.ru/upload/iblock/dca/dcaced1abb3f68ed28308cbdb199a490.png) no-repeat center';
+            case 2:
+                return 'url(http://pngimg.com/uploads/cappuccino/cappuccino_PNG28.png) no-repeat center';
+            case 3:
+                return 'url(https://www.realingredients.com/wp-content/uploads/sites/2/2017/11/banana-latte.png) no-repeat center';
+            case 4:
+                return 'url(https://cdn.imgbin.com/22/2/24/imgbin-cappuccino-ZXshKhxtmsVddnwyiGmE7sSWj.jpg) no-repeat center';
+            case 5:
+                return 'url(https://banner2.cleanpng.com/20180226/goq/kisspng-instant-coffee-latte-cafe-milk-coffee-drink-drinks-milk-5a93a44613a2b4.8262184515196252860804.jpg) no-repeat center';
+            case 6:
+                return 'url(http://www.pngall.com/wp-content/uploads/2016/06/Milk-PNG-Clipart.png) no-repeat center';
+        }
+    })(id);
+    takeAwayCoffee = false;
+
+    await setTimeout(() => {
+        progressBar.innerHTML = '';
+        coffeeCup.style.display = 'block';
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: "auto"
+        });
+    }, cookingDuration);
+    await setTimeout(() => {
+        if (!takeAwayCoffee) {
+            audio.play();
+        }
+    }, (cookingDuration + 5000));
+    await setTimeout(() => {
+        if (!takeAwayCoffee) {
+            coffeeCup.style.borderColor = '#000';
+            coffeeCup.style.animationPlayState = 'paused';
+            alert('Напиток в зоне выдачи');
+        }
+    }, (cookingDuration + 20000))
 });
 
-const ProgressBar = require('progressbar.js');
-let bar = new ProgressBar.Line(container, {
-    strokeWidth: 4,
-    easing: 'easeInOut',
-    duration: 5000,
-    color: '#FFEA82',
-    trailColor: '#eee',
-    trailWidth: 1,
-    svgStyle: {width: '100%', height: '100%'},
-    text: {
-        style: {
-            // Text color.
-            // Default: same as stroke color (options.color)
-            color: '#999',
-            position: 'absolute',
-            right: '0',
-            top: '30px',
-            padding: 0,
-            margin: 0,
-            transform: null
-        },
-        autoStyleContainer: false
-    },
-    from: {color: '#FFEA82'},
-    to: {color: '#ED6A5A'},
-    step: (state, bar) => {
-        bar.setText(Math.round(bar.value() * 100) + ' %');
-    }
+coffeeCup.addEventListener('click', () => {
+    takeAwayCoffee = true;
+    coffeeCup.style.animationPlayState = 'running';
+    coffeeCup.style.display = 'none';
+    cookingField.style.display = 'none';
+    audio.load();
 });
 
-bar.animate(1.0);
+

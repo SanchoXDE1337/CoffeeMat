@@ -9,6 +9,7 @@ module.exports = {
     },
     output: {
         path: output,
+        publicPath: "/CoffeeMat/",
         filename: "index.js"
     },
     module: {
